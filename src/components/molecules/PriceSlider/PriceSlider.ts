@@ -6,7 +6,8 @@ import {
 @customElement('price-slider')
 export default class PriceSlider extends LitElement {
   @property( { type: Array } ) prices = Array(5).fill(200).map( (val, ix) => val*(ix + 1));
-
+  @property( { type: Function }) isScrolling: any;
+  @property( { type: Number, attribute: false }) activeIx = 0;
   constructor() {
     super();
   }
@@ -15,23 +16,31 @@ export default class PriceSlider extends LitElement {
       .slider {
         display: flex;
         width: 100%;
-        overflow: hidden;
+        overflow-x: auto;
         scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
-      price-item:not(:last-child) {
-        margin-right: 20px;
+      price-item:last-child{
+        width: 100%;
       }
       price-item {
+        display:block;
+        width: auto;
         scroll-snap-align: start;
         flex-shrink: 0;
-        width: auto;
-        margin-right: 50px;
         border-radius: 10px;
-        transform-origin: center center;
-        transform: scale(1);
-        transition: transform 0.5s;
+        position: relative;
+      }
+      .container {
+        width: 100%;
+        font-size: var(--fontSize, 86px);
+        font-family: var(--fontFamily, Helvetica, Arial, sans-serif);
+        font-size: var(--fontSize, 86px);
+        color: var(--fontColor, white);
         position: relative;
       }
     `;
@@ -39,14 +48,36 @@ export default class PriceSlider extends LitElement {
 
   render() {
     return html`
-    <div class="slider">
-      ${
-        this.prices.map(price => html`
-          <price-item .price="${price}"></price-item>
-        `)
-      }
+    <div class="container">
+      <div class="slider" @scroll=${this.onScroll}>
+        ${
+          this.prices.map( (price, ix) => html`
+            <price-item .price="${price}" .active="${ix === this.activeIx}"></price-item>
+          `)
+        }
+      </div>
     </div>
       
     `;
   }
+
+  onScroll( { currentTarget }: TouchEvent) {
+    const target= currentTarget as HTMLElement;
+    clearTimeout(this.isScrolling);
+    this.isScrolling = setTimeout(this.scrollEnd(target), 200);
+    
+  }
+  
+  scrollEnd(target: HTMLElement) {
+    return () => {
+      const slides = [...target.querySelectorAll('price-item')].map(el => el as HTMLElement)
+      const activeIx = slides.reduce( (foundIx: number, slide: HTMLElement, ix): number => {
+        const offset = slide.offsetLeft - target.offsetLeft;
+        return (offset >= target.scrollLeft && offset < slides[foundIx].offsetLeft - target.offsetLeft) ? ix : foundIx
+      }, slides.length - 1);
+      this.activeIx = activeIx;
+    }
+  }
+
+
 }
