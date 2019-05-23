@@ -34,12 +34,13 @@ export default class PriceSlider extends LitElement {
         flex-shrink: 0;
         border-radius: 10px;
         position: relative;
+        padding-left: var(--paddingSize, 40px);
       }
       .container {
         width: 100%;
+        height: 116px;
         font-size: var(--fontSize, 86px);
         font-family: var(--fontFamily, Helvetica, Arial, sans-serif);
-        font-size: var(--fontSize, 86px);
         color: var(--fontColor, white);
         position: relative;
       }

@@ -1,4 +1,10 @@
 
-body {
-    background-color: lightblue; 
+body, #root {
+    background-color: lightblue;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+}
+* {
+    box-sizing: border-box;
 }
