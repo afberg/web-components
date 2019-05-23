@@ -7,6 +7,11 @@ import {
 
 @customElement('${camelToKebab(name)}')
 export default class ${name} extends LitElement {
+  @property( { type: String } ) heading = 'I am the ${name} component.';
+
+  constructor() {
+    super();
+  }
 
   static get styles() {
     return css\`
@@ -17,19 +22,9 @@ export default class ${name} extends LitElement {
     \`;
   }
   
-  @property()
-  heading: String = 'I am the ${name} component.';
-
-  constructor() {
-    super();
-  }
-
   render() {
     return html\`
       <h2>\${this.heading}</h2>
-      <div>
-        <slot></slot>
-      </div>
     \`;
   }
 }
