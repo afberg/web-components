@@ -8,5 +8,10 @@
         "emitDecoratorMetadata": true,
         "sourceMap": true
     },
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+        "@services": ["./src/services"],
+        "@components": ["./src/services"]
+    }
+    
 }

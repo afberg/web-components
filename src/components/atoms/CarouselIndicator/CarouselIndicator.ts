@@ -13,7 +13,6 @@ export default class CarouselIndicator extends LitElement {
 
   @property( { type: Number } ) count = 4;  
   @property( { type: Number } ) activeIx = 1;
-  @property( { type: Number, attribute: false, noAccessor: true } ) previousIx = 1;
 
   static get styles() {
     return css`
@@ -28,22 +27,33 @@ export default class CarouselIndicator extends LitElement {
         margin: 5px;
         border-radius: 50%;
         background-color: var(--indicatorColor, white);
+        transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+        opacity: 0.7;
+        position: relative;
+      }
+      div::after {
+        display: block;
+        content: ' ';
+        fill: blue;
+        background-color: var(--indicatorColor, white);
+        opacity: 0.5;
+        border-radius: 50%;
+        position: absolute;
+        width: calc(100% * 5);
+        height: calc(100% * 5);
+        top: -200%;
+        left: -200%;
+        transition: none;
+        transform: scale(0.2);
       }
       .active{
-        animation: scaleIn 0.2s ease-in-out 0s 1;
+        opacity: 1;
         transform: scale(2);
       }
-      .active-out:not(.active) {
-        animation: scaleOut 0.2s ease-in-out 0s 1;
-        transform: scale(1);
-      }
-      @keyframes scaleIn {
-        0%   { transform: scale(1) }
-        100% { transform: scale(2) }
-      }
-      @keyframes scaleOut {
-        0%   { transform: scale(2) }
-        100% { transform: scale(1) }
+      div.active::after {
+        transform: scale(5);
+        opacity: 0;
+        transition: all 0.5s ease-out;
       }
     `;
   }
@@ -52,15 +62,10 @@ export default class CarouselIndicator extends LitElement {
     const items: Boolean[] = Array(this.count).fill(1);
     return html`
       ${items.map( (_, ix) => html`
-        <div class="
-            ${this.activeIx % this.count ===  ix? 'active': ''} 
-            ${this.previousIx % this.count === ix ? 'active-out' : ''}"
+        <div class="${this.activeIx % this.count ===  ix? 'active': ''}"
           @click="${() => this.activeIx += 1}"
         ></div>
       `)}
     `;
-  }
-  updated(){
-    this.previousIx = this.activeIx;
   }
 }

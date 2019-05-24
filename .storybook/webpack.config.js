@@ -11,7 +11,9 @@ module.exports = ({ config }) => {
   });
   conf.resolve.extensions = ['.ts', ...conf.resolve.extensions]
   conf.resolve.alias = {...conf.resolve.alias,
-    '@styles': path.resolve(__dirname, '../src/styles')
+    '@styles': path.resolve(__dirname, '../src/styles'),
+    '@services': path.resolve(__dirname, '../src/services'),
+    '@components': path.resolve(__dirname, '../src/components')
   }
   return conf;
 }

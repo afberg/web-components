@@ -3,13 +3,19 @@ import {
   LitElement, html, customElement, property, css,
 } from 'lit-element';
 
+import ScrollSnapService from '@services/ScrollSnapService';
+
 @customElement('price-slider')
 export default class PriceSlider extends LitElement {
   @property( { type: Array } ) prices = Array(5).fill(200).map( (val, ix) => val*(ix + 1));
   @property( { type: Function }) isScrolling: any;
   @property( { type: Number, attribute: false }) activeIx = 0;
+  scrollSnapService: ScrollSnapService;
   constructor() {
     super();
+
+    this.scrollSnapService = new ScrollSnapService('price-item', true);
+    this.scrollSnapService.emitter.on('active', (ix: number) => this.activeIx = ix);
   }
   static get styles() {
     return css`
@@ -61,24 +67,8 @@ export default class PriceSlider extends LitElement {
       
     `;
   }
-
-  onScroll( { currentTarget }: TouchEvent) {
-    const target= currentTarget as HTMLElement;
-    clearTimeout(this.isScrolling);
-    this.isScrolling = setTimeout(this.scrollEnd(target), 200);
-    
+  onScroll( { currentTarget }: Event) {
+    this.scrollSnapService.onScroll(currentTarget as HTMLElement);
   }
-  
-  scrollEnd(target: HTMLElement) {
-    return () => {
-      const slides = [...target.querySelectorAll('price-item')].map(el => el as HTMLElement)
-      const activeIx = slides.reduce( (foundIx: number, slide: HTMLElement, ix): number => {
-        const offset = slide.offsetLeft - target.offsetLeft;
-        return (offset >= target.scrollLeft && offset < slides[foundIx].offsetLeft - target.offsetLeft) ? ix : foundIx
-      }, slides.length - 1);
-      this.activeIx = activeIx;
-    }
-  }
-
 
 }

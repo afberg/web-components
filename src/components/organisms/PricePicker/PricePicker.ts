@@ -23,7 +23,7 @@ export default class PricePicker extends LitElement {
         display:flex;
         flex-direction: column;
         padding: var(--paddingSize);
-        justify-content: space-between;
+        justify-content: space-around;
         background: var(--background, orange);
       }
       .spend-text {
@@ -33,7 +33,7 @@ export default class PricePicker extends LitElement {
         text-transform: uppercase;
         line-height: 150%;
       }
-      price-slider{
+      price-slider {
         margin-top: 20px;
         margin-left: calc(-1 * var(--paddingSize));
         width: calc(100% + var(--paddingSize) * 2);
@@ -53,7 +53,7 @@ export default class PricePicker extends LitElement {
   render() {
     return html`
       <div class="container">
-        <carousel-indicator .count="${4}" .active="${2}"></carousel-indicator>
+        <div></div>
         <div class="price-picker">
           <div class="spend-text">
             how much<br> do you want<br> to spend?
@@ -61,7 +61,6 @@ export default class PricePicker extends LitElement {
           <price-slider></price-slider>
           <div class="currency">us dollar</div>
         </div>
-        <div></div>
       </div>
     `;
   }
