@@ -5,16 +5,17 @@ import {
 
 import ScrollSnapService from '@services/ScrollSnapService';
 
-@customElement('price-slider')
-export default class PriceSlider extends LitElement {
-  @property( { type: Array } ) prices = Array(5).fill(200).map( (val, ix) => val*(ix + 1));
-  @property( { type: Function }) isScrolling: any;
+@customElement('snap-slider')
+export default class SnapSlider extends LitElement {
+  @property( { type: Array } ) slideTexts = Array(5).fill(200).map( (val, ix) => (val*(ix + 1)).toString());
+  @property( { type: String }) prefix = "$";
+  @property( { type: Function, attribute: false }) isScrolling: any;
   @property( { type: Number, attribute: false }) activeIx = 0;
+  
   scrollSnapService: ScrollSnapService;
   constructor() {
     super();
-
-    this.scrollSnapService = new ScrollSnapService('price-item', true);
+    this.scrollSnapService = new ScrollSnapService('slide-item', true);
     this.scrollSnapService.emitter.on('active', (ix: number) => this.activeIx = ix);
   }
   static get styles() {
@@ -30,10 +31,10 @@ export default class PriceSlider extends LitElement {
         top: 0;
         left: 0;
       }
-      price-item:last-child{
+      slide-item:last-child{
         width: 100%;
       }
-      price-item {
+      slide-item {
         display:block;
         width: auto;
         scroll-snap-align: start;
@@ -58,8 +59,8 @@ export default class PriceSlider extends LitElement {
     <div class="container">
       <div class="slider" @scroll=${this.onScroll}>
         ${
-          this.prices.map( (price, ix) => html`
-            <price-item .price="${price}" .active="${ix === this.activeIx}"></price-item>
+          this.slideTexts.map( (slideTexts, ix) => html`
+            <slide-item .text="${slideTexts}" .active="${ix === this.activeIx}" .prefix="${this.prefix}"></slide-item>
           `)
         }
       </div>

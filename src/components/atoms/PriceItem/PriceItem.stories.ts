@@ -1,8 +1,8 @@
 
 import { storiesOf, withKnobs, withClassPropertiesKnobs } from '@open-wc/demoing-storybook';
 
-import PriceItem from './PriceItem';
+import SlideItem from './SlideItem';
 
-storiesOf('atoms/PriceItem', module)
+storiesOf('atoms/SlideItem', module)
   .addDecorator(withKnobs)
-  .add('Documentation', () => withClassPropertiesKnobs(PriceItem));
+  .add('Documentation', () => withClassPropertiesKnobs(SlideItem));

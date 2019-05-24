@@ -4,9 +4,11 @@ import {
 } from 'lit-element';
 
 
-@customElement('price-item')
-export default class PriceItem extends LitElement {
-
+@customElement('slide-item')
+export default class SlideItem extends LitElement {
+  @property({ type: String }) text = '1';
+  @property({ type: Boolean, reflect: true }) active = false;
+  @property({ type: String }) prefix = "";
   static get styles() {
     return css`
       span {
@@ -27,11 +29,11 @@ export default class PriceItem extends LitElement {
         opacity: 1;
         transform: scale(1);
       }
-      .symbol {
+      .prefix {
         opacity: 0;
         margin-right: 10px;
       }
-      .symbol.active{
+      .prefix.active{
         opacity: 1;
         font-weight: normal;
       }
@@ -39,9 +41,7 @@ export default class PriceItem extends LitElement {
     `;
   }
   
-  @property({ type: Number }) price = 200;
-  @property({ type: Boolean, reflect: true }) active = false;
-  @property({ type: String }) symbol = "$";
+  
   constructor() {
     super();
   }
@@ -49,9 +49,9 @@ export default class PriceItem extends LitElement {
   render() {
     return html`
       
-      <span class="symbol ${this.active ? 'active' : ''}">${this.symbol}
+      <span class="prefix ${this.active ? 'active' : ''}">${this.prefix}
       </span><span class="${this.active ? 'active' : ''}">
-        ${this.price}
+        ${this.text}
       </span>
     `;
   }
