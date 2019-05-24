@@ -23,6 +23,7 @@ export default class SlideItem extends LitElement {
         display: inline-block;
         vertical-align: center;
         margin-right: 0;
+        text-transform: uppercase;
       }
       .active {
         font-weight: bold;

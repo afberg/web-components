@@ -7,7 +7,7 @@ import {
 @customElement('slider-picker')
 export default class SliderPicker extends LitElement {
   @property( { type: Array } ) options: String[] = Array(5).fill(200).map( (val, ix) => (val*(ix + 1)).toString());
-  @property( { type: String } ) prefix = "$"
+  @property( { type: String } ) prefix = ""
   @property( { type: Array } ) preText = ["how much", "do you want", "to spend?"];
   @property( { type: String } ) afterText = "us dollar";
   @property( { type: Boolean } ) isActive = false;
@@ -36,7 +36,7 @@ export default class SliderPicker extends LitElement {
         text-transform: uppercase;
         line-height: 150%;
       }
-      snap-slider {
+      slot {
         margin-top: 20px;
         margin-left: calc(-1 * var(--paddingSize));
         width: calc(100% + var(--paddingSize) * 2);
@@ -80,7 +80,7 @@ export default class SliderPicker extends LitElement {
           <div class="spend-text">
             ${this.preText.map( (text, ix) => html`${text}${ix < this.preText.length - 1 ? html`<br>`: ''}`)}
           </div>
-          <snap-slider .slideTexts="${this.options}" .prefix="${this.prefix}"></snap-slider>
+          <slot name="slider"></slot>
           <div class="currency">${this.afterText}</div>
         </div>
       </div>

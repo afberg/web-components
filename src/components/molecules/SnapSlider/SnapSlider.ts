@@ -8,7 +8,7 @@ import ScrollSnapService from '@services/ScrollSnapService';
 @customElement('snap-slider')
 export default class SnapSlider extends LitElement {
   @property( { type: Array } ) slideTexts = Array(5).fill(200).map( (val, ix) => (val*(ix + 1)).toString());
-  @property( { type: String }) prefix = "$";
+  @property( { type: String }) prefix = "";
   @property( { type: Function, attribute: false }) isScrolling: any;
   @property( { type: Number, attribute: false }) activeIx = 0;
   
@@ -20,6 +20,9 @@ export default class SnapSlider extends LitElement {
   }
   static get styles() {
     return css`
+      * {
+        box-sizing: border-box;
+      }
       .slider {
         display: flex;
         width: 100%;
@@ -35,6 +38,7 @@ export default class SnapSlider extends LitElement {
         width: 100%;
       }
       slide-item {
+        max-width: 100%;
         display:block;
         width: auto;
         scroll-snap-align: start;
